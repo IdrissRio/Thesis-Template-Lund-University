@@ -1,0 +1,215 @@
+\documentclass[a4paper, 10pt, twoside, openright]{book}
+\usepackage[T1]{fontenc}
+\usepackage{times}
+\usepackage{graphicx}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{fancyhdr}
+\usepackage{sectsty}
+\usepackage{listings}
+\usepackage{float}
+% \usepackage[showframe]{geometry}
+\usepackage[fit]{truncate}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{multirow}
+\usepackage{pdfpages}
+\usepackage{tikz}
+\usepackage{xurl}
+\usepackage[fancy,color=orange]{tikz-inet}
+\usepackage{booktabs}
+\usepackage{todonotes}
+\usepackage{mathtools}
+\usepackage[toc,page]{appendix}
+\usepackage[open=false]{bookmark} %DO NOT REMOVE: Fix paper outline in pdf readers
+\newcounter{rtaskno}
+\newcommand{\paper}[1]{\refstepcounter{rtaskno}\label{#1}}
+
+
+
+
+\newif\ifpaperI
+\newif\ifpaperII
+
+
+\paperItrue
+\paperIItrue
+
+
+
+% Bibliography setting and style
+\usepackage[backend=bibtex8,mincrossrefs=99,style=alphabetic,doi=false,isbn=false,url=false,refsegment=chapter,defernumbers=true,sorting=nyt]{biblatex}
+\addbibresource{Thesis.bib}
+\defbibheading{subbibliography}{\addcontentsline{toc}{section}{References}\section*{References}}
+
+\include{macros}
+
+\defbibheading{bibintoc}{%
+ \addcontentsline{toc}{chapter}{\bibname}%
+ \section*{References}}
+
+
+ \renewenvironment{appendices}{\setcounter{subsection}{0}%
+ \def\thesubsection{\thesection\Alph{subsection}}}{}
+
+\begin{document}
+
+\frontmatter
+
+%------------------------------------
+% title page
+%------------------------------------
+\begin{titlepage}
+
+\thispagestyle{empty}
+\includepdf[pages=-,offset=16mm 0mm]{frontpage.pdf}
+
+\begin{flushleft}
+\vspace*{\stretch{1}}
+
+ISBN TODO (electronic version)\\
+ISBN TODO (print version)\\
+ISSN DOTO\\
+Doctoral Dissertation TODO-NUMBER, TODO-YEAR\\
+LU-CS-DISS: TODO\linebreak[2]\\
+
+Department of Computer Science \\
+Lund University \\
+Box 118 \\
+SE-221 00  Lund \\
+Sweden  \linebreak[2]
+
+Email: \url{name.lastnam@cs.lth.se} \linebreak[2]
+
+Typeset using \LaTeX \\
+
+Printed in Sweden by Tryckeriet i E-huset, Lund, 2024\linebreak[2]
+
+\textit{\copyright ~2024 Name Lastname}
+\vspace{10mm}
+\end{flushleft}
+\end{titlepage}
+
+
+
+
+\thispagestyle{empty}
+
+\begin{flushleft}
+\vspace*{\stretch{1}}
+
+The cover of this thesis draws inspiration from the iconic \emph{Dragon Book}~\cite{aho2007compilers} by Aho,
+Sethi, and Ullman. Throughout my PhD journey, I often found myself feeling like
+the knight on its cover—facing difficult challenges, dealing with complex
+problems, and looking for answers in the literature. Like the knight, I
+tried to advance, equipped with little more than curiosity and
+determination. This image shows those moments of struggle and reflection, a
+reminder of the mix of uncertainty, hope, and moments of happiness that
+come with exploring a complex field like compiler technology and program
+analysis.
+
+
+\vspace{10mm}
+\end{flushleft}
+
+%------------------------------------
+
+
+
+
+
+
+%------------------------------------
+% kappa
+%------------------------------------
+\renewcommand{\thelstlisting}{\arabic{lstlisting}}
+\include{kappa/abstract}
+\include{kappa/contributionstatement}
+\include{kappa/acknowledgements}
+
+\setcounter{tocdepth}{3}
+\tableofcontents
+
+\mainmatter
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\theequation}{\arabic{equation}}
+
+% --------------------------------
+% --------- KAPPA ----------------
+% --------------------------------
+
+% Introduction
+\include{kappa/introduction}
+
+% Background
+\include{kappa/background}
+% Contribution
+\input{kappa/contribution}
+% Future work and conclusion
+\include{kappa/conclusions}
+
+
+{\raggedright% TODO remove me
+\printbibliography[segment=\therefsegment,heading=subbibliography]
+}%raggedright
+% remove the paper number(the LaTeX chapter) from all numberings
+\renewcommand{\thesection}{\arabic{section}}
+\renewcommand{\thefigure}{\arabic{figure}}
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\thechapter}{\Roman{chapter}}
+\renewcommand{\theequation}{\arabic{equation}}
+
+% include a reference at the footer of reach paper
+%\setlength{\chapterdist}{0mm}
+\newlength{\apa}
+\setlength{\spiff}{0cm}
+\renewcommand{\markmargin}{%
+\marginpar{\raggedright \rule{5mm}{0mm}\begin{tikzpicture}
+\node[rectangle, fill=black, minimum width=6cm, minimum height=2cm, inner sep=0pt,draw=black](rec){}; \node[left of = rec,node distance=2.7cm,text width=2cm,text centered, font=\sffamily\bfseries\small,rotate=90]  {\color{white}\textsc{\chaptername}};\end{tikzpicture}\rule{1pt}{\apa}}%
+}
+%-------------------------------------------------------
+
+
+
+
+\part{Included Papers}
+
+
+\ifpaperI
+\renewcommand{\chaptername}{Paper~I}
+\fancyhead[RE,LO]{Paper~I Title}
+\input{papers/paperOne/main.tex}
+\fi
+
+\ifpaperII
+\addtolength{\apa}{2cm}
+\addtolength{\apa}{2cm}
+\renewcommand{\chaptername}{Paper~II}
+\fancyhead[RE,LO]{Paper~II Title}
+\input{papers/paperTwo/main.tex}
+\fi
+
+
+
+
+
+
+
+
+\renewcommand{\markmargin}{%
+\marginpar{\raggedright \rule{5mm}{0mm}\begin{tikzpicture}
+\node[rectangle, fill=black, minimum width=6cm, minimum height=2cm, inner sep=0pt,draw=black](rec){}; \node[left of = rec,node distance=2.4cm,text width=2cm,text centered, font=\sffamily\bfseries\small,rotate=90]  {\color{white} {\textsc{PopSci}\\\textsc{Summary}\\\textsc{(ENG)}}};\end{tikzpicture}\rule{1pt}{\apa}}%
+}
+
+\newpage
+\addtolength{\apa}{2cm}
+\fancyhead[RE,LO]{PopSci Summary}
+\input{papers/popsummary/popsummary_eng.tex}
+
+
+
+
+
+
+\end{document}
